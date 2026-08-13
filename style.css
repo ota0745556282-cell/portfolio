@@ -14,10 +14,13 @@
   --font-display: 'Impact', 'Haettenschweiler', 'Franklin Gothic Bold', 'Arial Narrow Bold', sans-serif;
   --font-body: -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   --font-mono: 'Consolas', 'SFMono-Regular', 'Liberation Mono', 'Courier New', monospace;
+
+  --ease-out: cubic-bezier(.22,1,.36,1);
+  --ease-bounce: cubic-bezier(.34,1.56,.64,1);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root {
     --paper: #0b1510;
     --surface: #101d15;
     --surface-2: #17291d;
@@ -30,20 +33,6 @@
     --line: #2b4432;
     --shadow: 0 0 0;
   }
-}
-
-:root[data-theme="dark"] {
-  --paper: #0b1510;
-  --surface: #101d15;
-  --surface-2: #17291d;
-  --ink: #e9f1e0;
-  --ink-muted: #93a88c;
-  --primary: #74c896;
-  --primary-2: #3f8f63;
-  --accent: #d7ec6f;
-  --accent-ink: #14200f;
-  --line: #2b4432;
-  --shadow: 0 0 0;
 }
 
 * { box-sizing: border-box; }
@@ -113,7 +102,7 @@ a { color: inherit; }
   background: var(--accent);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.35s cubic-bezier(.22,1,.36,1);
+  transition: transform 0.35s var(--ease-out);
 }
 
 .nav-links a:hover,
@@ -142,7 +131,6 @@ a { color: inherit; }
     linear-gradient(90deg, var(--line), var(--line)) 50% 0 / 1px 100% no-repeat,
     radial-gradient(ellipse at 50% 40%, var(--surface) 0%, var(--paper) 70%);
   background-color: var(--paper);
-  opacity: 1;
 }
 
 .hero::before {
@@ -223,7 +211,7 @@ a { color: inherit; }
   display: inline-block;
   opacity: 0;
   transform: translateY(0.6em);
-  animation: rise 0.65s cubic-bezier(.22,1,.36,1) forwards;
+  animation: rise 0.65s var(--ease-out) forwards;
 }
 .hero-name span:nth-child(1) { animation-delay: 0.05s; }
 .hero-name span:nth-child(2) { animation-delay: 0.12s; }
@@ -265,7 +253,7 @@ a { color: inherit; }
   border: 1px solid var(--line);
   background: var(--surface);
   color: var(--primary-2);
-  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), background 0.3s, color 0.3s, border-color 0.3s;
+  transition: transform 0.3s var(--ease-bounce), background 0.3s, color 0.3s, border-color 0.3s;
 }
 .badge:hover {
   transform: translateY(-3px) rotate(-2deg);
@@ -288,7 +276,8 @@ a { color: inherit; }
   margin-bottom: 2.25rem;
   opacity: 0;
   transform: translateY(16px);
-  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(.22,1,.36,1);
+  transition: opacity 0.6s ease, transform 0.6s var(--ease-out);
+  animation: reveal-fallback 0.01s 4s forwards;
 }
 .section-head.in-view { opacity: 1; transform: translateY(0); }
 
@@ -320,9 +309,14 @@ a { color: inherit; }
 .reveal {
   opacity: 0;
   transform: translateY(18px);
-  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(.22,1,.36,1);
+  transition: opacity 0.6s ease, transform 0.6s var(--ease-out);
+  animation: reveal-fallback 0.01s 4s forwards;
 }
 .reveal.in-view { opacity: 1; transform: translateY(0); }
+
+@keyframes reveal-fallback {
+  to { opacity: 1; transform: none; }
+}
 
 /* ---------- About ---------- */
 .about-grid {
@@ -336,7 +330,7 @@ a { color: inherit; }
   border: 1px solid var(--line);
   border-radius: 14px;
   padding: 1.75rem;
-  transition: transform 0.35s cubic-bezier(.22,1,.36,1), box-shadow 0.35s;
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s;
 }
 .about-card:hover {
   transform: translateY(-6px);
@@ -376,7 +370,7 @@ a { color: inherit; }
   font-size: 0.7rem;
   letter-spacing: 0.03em;
   flex-shrink: 0;
-  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
+  transition: transform 0.3s var(--ease-bounce);
 }
 .route:hover .pin { transform: scale(1.12) rotate(-6deg); }
 
@@ -406,7 +400,7 @@ a { color: inherit; }
   border: 1px solid var(--line);
   color: var(--ink);
   cursor: default;
-  transition: transform 0.45s cubic-bezier(.34,1.56,.64,1), background 0.3s, color 0.3s, border-color 0.3s;
+  transition: transform 0.45s var(--ease-bounce), background 0.3s, color 0.3s, border-color 0.3s;
 }
 
 .chip::before {
@@ -415,7 +409,7 @@ a { color: inherit; }
   height: 0.5rem;
   border-radius: 50%;
   background: var(--accent);
-  transition: transform 0.4s cubic-bezier(.34,1.56,.64,1);
+  transition: transform 0.4s var(--ease-bounce);
 }
 
 .chip:hover {
@@ -442,8 +436,7 @@ a { color: inherit; }
   background: linear-gradient(155deg, var(--primary) 0%, var(--primary-2) 100%);
   color: var(--paper);
   overflow: hidden;
-  transition: transform 0.4s cubic-bezier(.22,1,.36,1), box-shadow 0.4s;
-  transform-style: preserve-3d;
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s;
 }
 
 .score-card:hover {
@@ -460,7 +453,7 @@ a { color: inherit; }
   border: 1.5px solid rgba(255,255,255,0.18);
   top: -3rem;
   right: -3rem;
-  transition: transform 0.5s cubic-bezier(.22,1,.36,1);
+  transition: transform 0.5s var(--ease-out);
 }
 .score-card:hover::after { transform: scale(1.15) rotate(20deg); }
 
