@@ -1,9 +1,46 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+
+<!-- ============================================================
+     HEAD ｜ 画面には表示されない設定部分
+     Google の検索結果や、LINE / Slack でURLを貼ったときの
+     プレビュー表示に使われます。ここも採用担当の目に入ります。
+     ============================================================ -->
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NAKAYA</title>
+
+<!-- ▼ ブラウザのタブに出る文字 / 検索結果の青いリンク文字 -->
+<title>太田健吾 | Engineer Portfolio</title>
+
+<!-- ▼【書き換える】検索結果でタイトルの下に出る説明文（全角60〜70字が目安）
+     「誰が・何ができる人か」を1文で。Works を書き終えたら内容を合わせて更新する -->
+<meta name="description" content="太田健吾のポートフォリオ。JavaScript / C# / Java を中心に開発しています。制作物・スキル・経歴を掲載しています。">
+
+<meta name="author" content="太田健吾">
+<meta name="theme-color" content="#1b4332" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b1510" media="(prefers-color-scheme: dark)">
+
+<!-- ▼【書き換える】公開URL（3箇所）
+     GitHub Pages で公開すると https://ユーザー名.github.io/リポジトリ名/ になります。
+     下の href="..." と content="..." の example.com を、そのURLに置き換えてください。
+     （もう1箇所、ファイル末尾の JSON-LD 内にもあります） -->
+<link rel="canonical" href="https://example.com/">
+<meta property="og:url" content="https://example.com/">
+
+<!-- ▼ SNSやSlackでURLを貼ったときに出るカードの文字 -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="太田健吾 | Engineer Portfolio">
+<meta property="og:description" content="JavaScript / C# / Java を中心に開発しています。制作物・スキル・経歴を掲載しています。">
+<meta property="og:locale" content="ja_JP">
+
+<!-- ▼【あとで】カード画像。1200×630px の og-image.png を同じフォルダに置いたら、
+     下2行の <!- - と - -> を消して有効化してください -->
+<!-- <meta property="og:image" content="https://example.com/og-image.png"> -->
+<!-- <meta name="twitter:card" content="summary_large_image"> -->
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
 <noscript>
 <style>
@@ -11,92 +48,538 @@
 </style>
 </noscript>
 </head>
+
+<!-- ============================================================
+     BODY ｜ ここから下が画面に表示される部分
+
+     このページの構成（上から順）
+       NAV      … 画面上部に固定されるメニュー
+       HERO     … 一番上の大きな名前とキャッチコピー
+       01 About … 自己紹介
+       02 Works … 制作物 ★最優先で埋める
+       03 Skills… 使える技術
+       04 Career… 経歴（年表）
+       05 Tennis… テニス実績
+       06 Contact… 連絡先
+       FOOTER   … 一番下
+
+     コメントの読み方
+       【書き換える】… 必ず手を入れる場所
+       【あとで】    … 公開前までに手を入れる場所
+       （触らなくてよい）… 見た目や動きの制御。放置でOK
+     ============================================================ -->
 <body>
+
+<!-- 画面には出ない。キーボード操作の人が本文へ飛ぶためのリンク（触らなくてよい） -->
+<a class="skip-link" href="#main">本文へスキップ</a>
+
 <div class="page">
+
+  <!-- ==========================================================
+       NAV ｜ 画面の一番上に貼り付くメニュー
+       ・左の「NAKAYA」＝ロゴ文字
+       ・右の並び＝各セクションへのジャンプリンク
+       セクションを増減したときは、この <li> も合わせて増減する
+       ========================================================== -->
   <nav class="nav">
-    <span class="nav-mark">NAKAYA</span>
+    <!-- ▼【書き換える】ロゴ文字。名前を変えるならここ -->
+    <a class="nav-mark" href="#top">太田健吾</a>
+
     <ul class="nav-links">
+      <!-- href="#about" の #about は、下のセクションの id="about" と対応しています -->
       <li><a href="#about">About</a></li>
+      <li><a href="#works">Works</a></li>
       <li><a href="#skills">Skills</a></li>
+      <li><a href="#career">Career</a></li>
       <li><a href="#tennis">Tennis</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
 
+  <!-- ==========================================================
+       HERO ｜ 開いた瞬間に見える一番上の画面
+       ここの第一印象で読み進めるかが決まります
+       ========================================================== -->
   <header class="hero" id="top">
+
+    <!-- 跳ねるテニスボール。見た目だけ（触らなくてよい） -->
     <div class="ball" aria-hidden="true"></div>
+
     <div class="hero-inner">
+
+      <!-- ▼【書き換える】名前の上に出る小さな肩書き（英語・短く） -->
       <p class="eyebrow">Engineer &amp; Tennis Player</p>
-      <h1 class="hero-name" aria-label="NAKAYA">
-        <span>N</span><span>A</span><span>K</span><span>A</span><span>Y</span><span>A</span>
+
+      <!-- ▼【書き換える】画面中央の大きな名前
+           1文字ずつ <span> で囲むと、1文字ずつ順番に浮き上がる演出がかかります。
+           名前を変えるときは aria-label と <span> の中身の両方を直す。
+           文字数を変えたら style.css の .hero-name span:nth-child(...) も増減が必要 -->
+      <h1 class="hero-name" aria-label="太田健吾">
+        <span>太</span><span>田</span><span>健</span><span>吾</span>
       </h1>
-      <p class="hero-tagline">教養大学で学びながら、コードとコートを行き来してきました。</p>
+
+      <!-- ▼【書き換える】名前の下のキャッチコピー（1〜2文） -->
+      <p class="hero-tagline">同志社大学で学びながら、コードとコートを行き来してきました。</p>
+
+      <!-- ▼【書き換える】丸いバッジ。増やすときは <span class="badge">...</span> をコピー -->
       <div class="hero-meta">
         <span class="badge">🇹🇭 THAILAND</span>
         <span class="badge">🇯🇵 JAPAN</span>
       </div>
+
+      <!-- ▼ 2つのボタン。文字だけ変えてOK。href の #works / #contact は飛び先 -->
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#works">制作物を見る</a>
+        <a class="btn btn-ghost" href="#contact">連絡する</a>
+      </div>
+
     </div>
   </header>
 
-  <main>
+  <main id="main">
+
+    <!-- ==========================================================
+         01 ｜ ABOUT ｜ 自己紹介
+         画面上の見出し：「01  About」
+         ========================================================== -->
     <section id="about" class="section">
+
+      <!-- 見出し部分。"01" は連番、"About" は画面に出る文字 -->
       <div class="section-head">
         <span class="tag">01</span>
         <h2>About</h2>
       </div>
+
+      <!-- ▼【書き換える】自己紹介の本文（3〜4文）
+           入れる要素は次の3つ：
+             1. 何が作れるか（言語・領域）
+             2. なぜエンジニアなのか
+             3. どんな進め方をする人か
+           タイ居住歴とテニスは他の学生と差がつく材料。
+           「だから何ができるか」まで書くと効きます -->
+      <p class="lead reveal">
+        タイに住んでいた経験から、異なる環境の人と協働することに抵抗がありません。
+        現在は同志社大学で学びながら、JavaScript / C# / Java を使って個人開発を進めています。
+        テニスで培った「課題を分解して反復改善する」進め方を、そのままコードにも当てはめて取り組んでいます。
+      </p>
+
+      <!-- ▼ 3枚のカード。<h3> が小見出し、<p> が中身
+           カードを増やすなら <div class="about-card reveal"> ... </div> ごとコピー -->
       <div class="about-grid">
+
         <div class="about-card reveal">
           <h3>学歴</h3>
-          <p>教養大学</p>
+          <!-- ▼【書き換える】学校名 -->
+          <p>同志社大学</p>
         </div>
+
         <div class="about-card reveal">
           <h3>居住歴</h3>
+          <!-- ▼ 国コードの丸バッジ（TH → JP）。国を変えるなら .pin の中身を書き換える -->
           <div class="route">
             <span class="pin">TH</span>
             <span class="route-line"></span>
             <span class="pin">JP</span>
           </div>
         </div>
+
+        <div class="about-card reveal">
+          <h3>志望</h3>
+          <!-- ▼【書き換える】志望職種を具体的に
+               例：Webアプリケーションエンジニア / バックエンドエンジニア -->
+          <p>ソフトウェアエンジニア</p>
+        </div>
+
       </div>
     </section>
 
-    <section id="skills" class="section">
+    <!-- ==========================================================
+         02 ｜ WORKS ｜ 制作物  ★ここが一番見られます★
+         画面上の見出し：「02  Works」
+
+         カード1枚が作品1つ。<article class="work-card"> 〜 </article> が1セット。
+         3件あると比較材料として十分です。
+
+         カードの中身（上から順）
+           work-no      … 通し番号 01 / 02 / 03
+           work-status  … 右上のラベル（公開中 / 準備中 など）
+           work-title   … 作品名
+           work-desc    … 説明。「作った機能」より「解決した課題」から書く
+           work-detail  … 担当 と 工夫した点
+           tech-list    … 使った技術のタグ
+           work-links   … Demo（動くもの）と Code（GitHub）へのリンク
+
+         書き終えたカードは class から is-draft を消してください
+         （点線の枠 → 実線の枠に変わります）。
+         使わないカードは <article> 〜 </article> をまるごと削除。
+         ========================================================== -->
+    <section id="works" class="section">
+
       <div class="section-head">
         <span class="tag">02</span>
-        <h2>Skills</h2>
+        <h2>Works</h2>
       </div>
-      <div class="chip-row reveal">
-        <span class="chip">JavaScript</span>
-        <span class="chip">C#</span>
-        <span class="chip">Java</span>
+
+      <!-- ▼【書き換える】Works 全体の一言説明 -->
+      <p class="section-note reveal">個人開発を中心に、設計から実装まで一人で通しています。</p>
+
+      <div class="work-grid">
+
+        <!-- ---------- 作品カード 1枚目（記入済みの見本） ---------- -->
+        <article class="work-card reveal">
+          <div class="work-top">
+            <span class="work-no">01</span>
+            <!-- 右上のラベル。is-live を付けると黄緑色になります -->
+            <span class="work-status is-live">公開中</span>
+          </div>
+
+          <h3 class="work-title">Portfolio Site</h3>
+
+          <p class="work-desc">
+            このサイト。ビルドツールを使わず HTML / CSS / JavaScript のみで構築。
+            IntersectionObserver によるスクロール表示、ダークモード対応、
+            JS が失敗しても本文が消えないフォールバックを実装しています。
+          </p>
+
+          <dl class="work-detail">
+            <div>
+              <dt>担当</dt>
+              <dd>デザイン・実装（個人開発）</dd>
+            </div>
+            <div>
+              <dt>工夫した点</dt>
+              <dd>CSS 変数によるテーマ設計と、<code>prefers-reduced-motion</code> を含むアクセシビリティ配慮</dd>
+            </div>
+          </dl>
+
+          <ul class="tech-list">
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>JavaScript</li>
+          </ul>
+
+          <!-- ▼【あとで】href="#" を実際のURLに差し替える
+               公開URL と GitHub リポジトリのURL。片方しか無い場合は、
+               無いほうの <a> 1行を削除してください -->
+          <div class="work-links">
+            <a class="work-link" href="#" aria-label="Portfolio Site のデモを開く">Demo <span aria-hidden="true">↗</span></a>
+            <a class="work-link" href="#" aria-label="Portfolio Site のソースコードを見る">Code <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+
+        <!-- ---------- 作品カード 2枚目（テンプレート・要記入） ----------
+             下の日本語はすべて「書き方の指示」です。実際の内容に置き換えてください -->
+        <article class="work-card is-draft reveal">
+          <div class="work-top">
+            <span class="work-no">02</span>
+            <span class="work-status">準備中</span>
+          </div>
+
+          <!-- ▼【書き換える】作品名 -->
+          <h3 class="work-title">作品タイトル</h3>
+
+          <!-- ▼【書き換える】説明（2〜3文）
+               ×「ログイン機能を作った」
+               ○「部員の練習記録が紙で共有できなかったため、スマホから入力・閲覧できるようにした」 -->
+          <p class="work-desc">
+            何を解決するためのものか、誰が使うのかを2〜3文で。
+            「作った機能」ではなく「解決した課題」から書き始めると読まれます。
+          </p>
+
+          <dl class="work-detail">
+            <div>
+              <dt>担当</dt>
+              <!-- ▼【書き換える】例：個人開発 / 4人チーム・フロントエンド担当 -->
+              <dd>個人開発 / チーム開発（役割・人数）</dd>
+            </div>
+            <div>
+              <dt>工夫した点</dt>
+              <!-- ▼【書き換える】面接で必ず掘られる箇所。詰まった所とその解決方法を具体的に
+                   ○「初回表示が3秒かかっていたため、画像を遅延読み込みにして1.2秒に短縮した」 -->
+              <dd>詰まった箇所と、それをどう調べてどう解決したか</dd>
+            </div>
+          </dl>
+
+          <!-- ▼【書き換える】使った技術。実際に自分で書いたものだけ。
+               1つ＝<li>1行。増減は行のコピー/削除で -->
+          <ul class="tech-list">
+            <li>技術</li>
+            <li>技術</li>
+          </ul>
+
+          <!-- ▼【書き換える】href="#" を実際のURLに -->
+          <div class="work-links">
+            <a class="work-link" href="#">Demo <span aria-hidden="true">↗</span></a>
+            <a class="work-link" href="#">Code <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+
+        <!-- ---------- 作品カード 3枚目（テンプレート・要記入） ---------- -->
+        <article class="work-card is-draft reveal">
+          <div class="work-top">
+            <span class="work-no">03</span>
+            <span class="work-status">準備中</span>
+          </div>
+
+          <!-- ▼【書き換える】作品名 -->
+          <h3 class="work-title">作品タイトル</h3>
+
+          <!-- ▼【書き換える】説明（2〜3文） -->
+          <p class="work-desc">
+            学校の課題やハッカソン作品でも構いません。
+            規模より「自分で判断した箇所」が説明できるかが見られます。
+          </p>
+
+          <dl class="work-detail">
+            <div>
+              <dt>担当</dt>
+              <!-- ▼【書き換える】 -->
+              <dd>個人開発 / チーム開発（役割・人数）</dd>
+            </div>
+            <div>
+              <dt>工夫した点</dt>
+              <!-- ▼【書き換える】 -->
+              <dd>技術選定の理由、または改善して測れた変化</dd>
+            </div>
+          </dl>
+
+          <!-- ▼【書き換える】使った技術 -->
+          <ul class="tech-list">
+            <li>技術</li>
+            <li>技術</li>
+          </ul>
+
+          <!-- ▼【書き換える】href="#" を実際のURLに -->
+          <div class="work-links">
+            <a class="work-link" href="#">Demo <span aria-hidden="true">↗</span></a>
+            <a class="work-link" href="#">Code <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+
       </div>
     </section>
 
-    <section id="tennis" class="section">
+    <!-- ==========================================================
+         03 ｜ SKILLS ｜ 使える技術
+         画面上の見出し：「03  Skills」
+
+         グループ1つ＝<div class="skill-group"> 〜 </div>
+         技術1つ＝<span class="chip">技術名</span>（1行コピーで増やせます）
+         ========================================================== -->
+    <section id="skills" class="section">
+
       <div class="section-head">
         <span class="tag">03</span>
+        <h2>Skills</h2>
+      </div>
+
+      <div class="skill-groups">
+
+        <!-- ---------- グループ1：言語 ---------- -->
+        <div class="skill-group reveal">
+          <!-- ▼ グループ名（画面には大文字で出ます） -->
+          <h3 class="skill-group-title">Languages</h3>
+          <!-- ▼【書き換える】実際に自分でコードを書いた言語だけ。
+               授業で触った程度のものは下の Learning へ -->
+          <div class="chip-row">
+            <span class="chip">JavaScript</span>
+            <span class="chip">C#</span>
+            <span class="chip">Java</span>
+            <span class="chip">HTML / CSS</span>
+          </div>
+        </div>
+
+        <!-- ---------- グループ2：ツール ---------- -->
+        <div class="skill-group reveal">
+          <h3 class="skill-group-title">Tools</h3>
+          <!-- ▼【書き換える】実際に使っているものだけ残す
+               例：Docker / Figma / MySQL / Unity など -->
+          <div class="chip-row">
+            <span class="chip">Git / GitHub</span>
+            <span class="chip">VS Code</span>
+          </div>
+        </div>
+
+        <!-- ---------- グループ3：学習中 ---------- -->
+        <div class="skill-group reveal">
+          <h3 class="skill-group-title">Learning</h3>
+          <!-- ▼【書き換える】いま学習中のもの。ここは空にしないこと。
+               「学習を続けている人」という評価材料になります。
+               is-learning を付けると点線の枠になります -->
+          <div class="chip-row">
+            <span class="chip is-learning">TypeScript</span>
+            <span class="chip is-learning">React</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         04 ｜ CAREER ｜ 経歴（縦の年表）
+         画面上の見出し：「04  Career」
+
+         項目1つ＝<li class="timeline-item"> 〜 </li>
+           timeline-date … 左側の年月（2024.04 の形式）
+           <h3>          … 出来事の見出し
+           <p>           … 補足を1行
+
+         入学 / 学習開始 / インターン / アルバイト / ハッカソン /
+         資格 / 大会実績 などを、古い順に並べます
+         ========================================================== -->
+    <section id="career" class="section">
+
+      <div class="section-head">
+        <span class="tag">04</span>
+        <h2>Career</h2>
+      </div>
+
+      <ol class="timeline">
+
+        <!-- ▼【書き換える】20XX を実際の年に。以下すべて同様 -->
+        <li class="timeline-item reveal">
+          <span class="timeline-date">20XX.04</span>
+          <div class="timeline-body">
+            <h3>教養大学 入学</h3>
+            <p>専攻・力を入れて学んだ領域を1行で。</p>
+          </div>
+        </li>
+
+        <li class="timeline-item reveal">
+          <span class="timeline-date">20XX.XX</span>
+          <div class="timeline-body">
+            <h3>プログラミング学習を開始</h3>
+            <p>きっかけと、最初に作ったものを1行で。</p>
+          </div>
+        </li>
+
+        <li class="timeline-item reveal">
+          <span class="timeline-date">2026.XX</span>
+          <div class="timeline-body">
+            <h3>ポートフォリオサイト公開</h3>
+            <p>HTML / CSS / JavaScript で制作・公開。</p>
+          </div>
+        </li>
+
+        <!-- 項目を増やすときは、上の <li> 〜 </li> を1つコピーして貼り付け -->
+
+      </ol>
+    </section>
+
+    <!-- ==========================================================
+         05 ｜ TENNIS ｜ テニス実績
+         画面上の見出し：「05  Tennis」
+
+         カード1つ＝<article class="score-card"> 〜 </article>
+           score-tag … カード上部の小さいラベル
+           <h3>      … 実績（日本語）
+           <p>       … 実績（英語での補足）
+         ========================================================== -->
+    <section id="tennis" class="section">
+
+      <div class="section-head">
+        <span class="tag">05</span>
         <h2>Tennis</h2>
       </div>
+
       <div class="score-grid">
+
         <article class="score-card reveal">
           <span class="score-tag">World</span>
+          <!-- ▼ 実績を増やすなら、この <article> 〜 </article> をコピー -->
           <h3>世界大会 出場</h3>
           <p>International competition appearance</p>
         </article>
+
         <article class="score-card reveal">
           <span class="score-tag">National</span>
           <h3>全国選抜 出場</h3>
           <p>National selection tournament appearance</p>
         </article>
+
       </div>
     </section>
+
+    <!-- ==========================================================
+         06 ｜ CONTACT ｜ 連絡先
+         画面上の見出し：「06  Contact」
+
+         ここが繋がらないと、他が良くても選考に進めません
+         ========================================================== -->
+    <section id="contact" class="section">
+
+      <div class="section-head">
+        <span class="tag">06</span>
+        <h2>Contact</h2>
+      </div>
+
+      <div class="contact-card reveal">
+
+        <!-- ▼【書き換える】連絡先の案内文。<br> で改行されます。
+             返信の目安を書くと印象が良くなります（書いたら必ず守る） -->
+        <p class="contact-lead">
+          インターン・選考のご連絡はこちらへお願いします。<br>
+          2営業日以内に返信します。
+        </p>
+
+        <!-- ▼【書き換える】メールアドレス（同じアドレスを2箇所に書きます）
+             ・mailto:○○○   … 「メールを送る」ボタンの飛び先
+             ・data-copy="○○○" … 「アドレスをコピー」ボタンでコピーされる文字
+             ※ 現在は個人用アドレスです。公開すると迷惑メールが来るため、
+               就活用のアドレスを作って両方とも差し替えるのがおすすめです -->
+        <div class="contact-actions">
+          <a class="btn btn-primary" href="mailto:ota0745556282@gmail.com">メールを送る</a>
+          <button class="btn btn-ghost" type="button" data-copy="ota0745556282@gmail.com">
+            <span class="copy-label">アドレスをコピー</span>
+          </button>
+        </div>
+
+        <!-- ▼【書き換える】SNS・GitHub のリンク
+             href="#" を自分のページのURLに置き換える。
+             例：https://github.com/ユーザー名
+             使っていないサービスは <li> 〜 </li> の行ごと削除してください
+             （リンク切れのまま公開すると逆効果です） -->
+        <ul class="contact-links">
+          <li><a href="#" rel="me noopener">GitHub <span aria-hidden="true">↗</span></a></li>
+          <li><a href="#" rel="me noopener">X (Twitter) <span aria-hidden="true">↗</span></a></li>
+        </ul>
+
+      </div>
+    </section>
+
   </main>
 
+  <!-- ==========================================================
+       FOOTER ｜ ページ最下部
+       ========================================================== -->
   <footer class="footer">
+    <!-- ▼【書き換える】左：名前　中央：肩書き　右：先頭へ戻るリンク -->
     <span class="footer-mark">NAKAYA</span>
     <span class="footer-note">Software &amp; Tennis</span>
+    <a class="footer-top" href="#top">Back to top <span aria-hidden="true">↑</span></a>
   </footer>
+
 </div>
 
+<!-- ============================================================
+     検索エンジン向けの自己紹介データ（画面には表示されません）
+     Google がこのページを「人物のページ」として認識するためのものです
+     ============================================================ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "NAKAYA",
+  "url": "https://example.com/",
+  "jobTitle": "Software Engineer",
+  "knowsAbout": ["JavaScript", "C#", "Java", "HTML", "CSS"],
+  "alumniOf": { "@type": "CollegeOrUniversity", "name": "教養大学" }
+}
+</script>
+<!-- ▲【書き換える】上の "url" の example.com を公開URLに。
+     "knowsAbout" は Skills に合わせる。"name" は名前 -->
+
+<!-- 動きの制御。触らなくてよい（スクロール表示・メニューのハイライト・コピーボタン） -->
 <script src="script.js"></script>
 </body>
 </html>
