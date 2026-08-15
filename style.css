@@ -11,9 +11,11 @@
   --line: #a9c08f;
   --shadow: 27 40 20;
 
-  --font-display: 'Impact', 'Haettenschweiler', 'Franklin Gothic Bold', 'Arial Narrow Bold', sans-serif;
-  --font-body: -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: 'Consolas', 'SFMono-Regular', 'Liberation Mono', 'Courier New', monospace;
+  /* 英字は Space Grotesk、日本語は Zen Kaku Gothic New が使われます。
+     Webフォントの読み込みに失敗した場合は端末標準の書体に落ちます */
+  --font-display: 'Space Grotesk', 'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+  --font-body: 'Zen Kaku Gothic New', -apple-system, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Consolas', 'SFMono-Regular', 'Liberation Mono', monospace;
 
   --ease-out: cubic-bezier(.22,1,.36,1);
   --ease-bounce: cubic-bezier(.34,1.56,.64,1);
@@ -52,6 +54,67 @@ a { color: inherit; }
 
 .page { overflow-x: hidden; }
 
+html { scroll-behavior: smooth; }
+
+:focus-visible {
+  outline: 2px solid var(--primary-2);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.7rem 1.1rem;
+  background: var(--primary);
+  color: var(--paper);
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+.skip-link:focus {
+  left: 0.75rem;
+  top: 0.75rem;
+}
+
+/* ---------- スクロール進捗バー ----------
+   ページ上端に細い線を引き、読み進めた割合だけ伸ばします。
+   幅は script.js が --progress の値を書き換えて動かしています */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 60;
+  pointer-events: none;
+  background: transparent;
+}
+
+.scroll-progress span {
+  display: block;
+  height: 100%;
+  width: var(--progress, 0%);
+  background: linear-gradient(90deg, var(--primary-2), var(--accent));
+  transition: width 0.1s linear;
+}
+
+/* ---------- ノイズ（紙の質感） ----------
+   SVGのフィルタでノイズを生成して薄くかぶせています。画像ファイルは不要です */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-color-scheme: dark) {
+  .grain { opacity: 0.06; }
+}
+
 /* ---------- Nav ---------- */
 .nav {
   position: sticky;
@@ -72,15 +135,23 @@ a { color: inherit; }
   letter-spacing: 0.08em;
   font-size: 0.95rem;
   color: var(--primary);
+  text-decoration: none;
+  flex-shrink: 0;
 }
 
 .nav-links {
   display: flex;
-  gap: clamp(1rem, 3vw, 2.25rem);
+  gap: clamp(0.85rem, 2.6vw, 2rem);
   list-style: none;
   margin: 0;
   padding: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
+.nav-links::-webkit-scrollbar { display: none; }
+
+.nav-links li { flex-shrink: 0; }
 
 .nav-links a {
   position: relative;
@@ -111,6 +182,13 @@ a { color: inherit; }
 }
 .nav-links a:hover::after,
 .nav-links a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.nav-links a.is-active {
+  color: var(--ink);
+}
+.nav-links a.is-active::after {
   transform: scaleX(1);
 }
 
@@ -199,10 +277,10 @@ a { color: inherit; }
 .hero-name {
   margin: 0;
   font-family: var(--font-display);
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  font-size: clamp(3.6rem, 13vw, 9.5rem);
-  line-height: 0.9;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  font-size: clamp(3.4rem, 12vw, 8.5rem);
+  line-height: 0.95;
   color: var(--primary);
   text-wrap: balance;
 }
@@ -262,6 +340,56 @@ a { color: inherit; }
   border-color: var(--primary);
 }
 
+/* ---------- Marquee（横に流れ続ける帯） ----------
+   同じ内容の .marquee-group を2つ並べ、トラック全体を -50% ぶん
+   動かすことで、継ぎ目なく無限に流れているように見せています */
+.marquee {
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  padding: 0.9rem 0;
+  user-select: none;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 32s linear infinite;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.marquee-group b {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1rem, 2.2vw, 1.35rem);
+  letter-spacing: -0.01em;
+  color: var(--primary);
+  padding: 0 1.1rem;
+  white-space: nowrap;
+}
+
+.marquee-group i {
+  font-style: normal;
+  font-size: 0.7rem;
+  color: var(--primary-2);
+  opacity: 0.7;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
 /* ---------- Sections ---------- */
 .section {
   max-width: 62rem;
@@ -292,8 +420,8 @@ a { color: inherit; }
 .section-head h2 {
   margin: 0;
   font-family: var(--font-display);
-  font-weight: 400;
-  letter-spacing: 0.01em;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   font-size: clamp(1.9rem, 4vw, 2.8rem);
   color: var(--ink);
 }
@@ -309,7 +437,9 @@ a { color: inherit; }
 .reveal {
   opacity: 0;
   transform: translateY(18px);
-  transition: opacity 0.6s ease, transform 0.6s var(--ease-out);
+  /* --delay は script.js が「同じ並びの何番目か」に応じて入れます。
+     カードが1枚ずつ順に現れるようになります */
+  transition: opacity 0.6s ease var(--delay, 0s), transform 0.6s var(--ease-out) var(--delay, 0s);
   animation: reveal-fallback 0.01s 4s forwards;
 }
 .reveal.in-view { opacity: 1; transform: translateY(0); }
@@ -472,9 +602,9 @@ a { color: inherit; }
 .score-card h3 {
   margin: 0 0 0.4rem;
   font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 1.7rem;
-  letter-spacing: 0.01em;
+  font-weight: 700;
+  font-size: 1.55rem;
+  letter-spacing: -0.01em;
 }
 
 .score-card p {
@@ -482,6 +612,499 @@ a { color: inherit; }
   color: rgba(255,255,255,0.78);
   font-size: 0.95rem;
 }
+
+/* ---------- Buttons ---------- */
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 2rem;
+  opacity: 0;
+  animation: rise 0.7s ease forwards;
+  animation-delay: 0.85s;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--primary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.3s var(--ease-bounce), background 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--paper);
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 24px -14px rgba(var(--shadow) / 0.6);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--primary);
+}
+.btn-ghost:hover {
+  transform: translateY(-3px);
+  background: var(--surface-2);
+}
+
+/* ---------- Sections: shared text ---------- */
+.lead {
+  max-width: 44rem;
+  margin: 0 0 2rem;
+  font-size: clamp(1rem, 1.6vw, 1.08rem);
+  color: var(--ink);
+}
+
+.section-note {
+  margin: -1rem 0 2rem;
+  color: var(--ink-muted);
+  font-size: 0.95rem;
+}
+
+/* ---------- Works ---------- */
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  gap: 1.5rem;
+}
+
+.work-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* 作品が1件のとき、カードが横に伸びきらないよう上限を設ける
+     （2件以上ではグリッドの列幅のほうが狭くなるため影響しない） */
+  max-width: 34rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1.75rem;
+  overflow: hidden;
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s, border-color 0.35s;
+}
+.work-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--primary-2);
+  box-shadow: 0 20px 34px -20px rgba(var(--shadow) / 0.55);
+}
+
+/* マウスを追いかける光。script.js が --mx / --my に
+   カード内でのカーソル位置を書き込み、そこを中心に円を描いています */
+.work-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    18rem circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--accent) 26%, transparent),
+    transparent 65%
+  );
+}
+.work-card:hover::before { opacity: 1; }
+
+/* カードの中身が光より前に来るようにする */
+.work-card > * { position: relative; z-index: 1; }
+
+/* 未入稿の作品カード。中身を書いたら is-draft を外す */
+.work-card.is-draft {
+  border-style: dashed;
+  background: transparent;
+}
+.work-card.is-draft .work-title { color: var(--ink-muted); }
+
+.work-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.work-no {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  color: var(--primary-2);
+}
+
+.work-status {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--ink-muted);
+}
+.work-status.is-live {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.work-title {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  font-size: 1.5rem;
+  color: var(--ink);
+}
+
+.work-desc {
+  margin: 0 0 1.25rem;
+  font-size: 0.94rem;
+  color: var(--ink-muted);
+}
+
+.work-detail {
+  margin: 0 0 1.25rem;
+  padding: 1rem 0 0;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 0.7rem;
+}
+
+.work-detail > div {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.work-detail dt {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary-2);
+  padding-top: 0.15rem;
+}
+
+.work-detail dd {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.work-detail code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--surface-2);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+
+.tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  list-style: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
+}
+
+.tech-list li {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.work-links {
+  display: flex;
+  gap: 1.25rem;
+  margin-top: auto;
+  padding-top: 0.25rem;
+}
+
+.work-link {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  color: var(--primary-2);
+  padding-bottom: 0.15rem;
+}
+.work-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--primary-2);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease-out);
+}
+.work-link:hover::after,
+.work-link:focus-visible::after { transform: scaleX(1); }
+
+/* リンク先が無い項目。押せない普通のテキストとして表示する
+   （下線・矢印・ホバー反応なし。色と等幅フォントで存在感だけ残す） */
+.static-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+  cursor: default;
+  user-select: text;
+}
+
+.static-text::before {
+  content: "";
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 2px;
+  background: var(--line);
+  flex-shrink: 0;
+}
+
+/* ---------- Skills ---------- */
+.skill-groups {
+  display: grid;
+  gap: 2rem;
+}
+
+.skill-group-title {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--primary-2);
+  font-weight: 400;
+}
+
+.chip.is-learning {
+  border-style: dashed;
+  color: var(--ink-muted);
+}
+.chip.is-learning::before {
+  background: transparent;
+  border: 1px solid var(--primary-2);
+}
+
+/* ---------- Skills: レベル付きリスト ---------- */
+.skill-list {
+  list-style: none;
+  margin: 0 0 2.5rem;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 1.25rem;
+}
+
+.skill-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1.35rem 1.5rem;
+  transition: transform 0.35s var(--ease-out), border-color 0.35s;
+}
+.skill-item:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary-2);
+}
+
+.skill-item-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.skill-name {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+.skill-years {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--primary-2);
+  white-space: nowrap;
+}
+
+.skill-level {
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 0.85rem;
+}
+
+.skill-level .dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: transparent;
+}
+.skill-level .dot.is-on {
+  background: var(--accent);
+  border-color: var(--primary-2);
+}
+
+.skill-note {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+}
+
+/* ---------- Engineering: 質問カード ---------- */
+.qa-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 1.25rem;
+}
+
+.qa-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 14px 14px 0;
+  padding: 1.5rem 1.6rem;
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s;
+}
+.qa-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 30px -20px rgba(var(--shadow) / 0.5);
+}
+
+.qa-card h3 {
+  margin: 0 0 0.7rem;
+  font-size: 0.88rem;
+  letter-spacing: 0.03em;
+  color: var(--primary-2);
+}
+
+.qa-card p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* ---------- Career ---------- */
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 1.6rem;
+  position: relative;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 0.32rem;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 1px;
+  background: repeating-linear-gradient(var(--line) 0 5px, transparent 5px 10px);
+}
+
+.timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  gap: 1.25rem;
+  padding-bottom: 2rem;
+}
+.timeline-item:last-child { padding-bottom: 0; }
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -1.6rem;
+  top: 0.5rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 1px solid var(--primary-2);
+}
+
+.timeline-date {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: var(--primary-2);
+  padding-top: 0.2rem;
+}
+
+.timeline-body h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1.05rem;
+}
+
+.timeline-body p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--ink-muted);
+}
+
+/* ---------- Contact ---------- */
+.contact-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: clamp(1.75rem, 4vw, 2.75rem);
+}
+
+.contact-lead {
+  margin: 0 0 1.75rem;
+  font-size: 1.05rem;
+}
+
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 1.75rem 0 0;
+  padding: 1.5rem 0 0;
+  border-top: 1px solid var(--line);
+}
+
+.contact-links a {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  color: var(--primary-2);
+  transition: color 0.3s;
+}
+.contact-links a:hover { color: var(--ink); }
 
 /* ---------- Footer ---------- */
 .footer {
@@ -506,14 +1129,40 @@ a { color: inherit; }
   color: var(--ink-muted);
 }
 
+.footer-top {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  color: var(--primary-2);
+  transition: color 0.3s;
+}
+.footer-top:hover { color: var(--ink); }
+
+@media (max-width: 640px) {
+  .timeline-item {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+  .work-detail > div {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
   *, *::before, *::after {
     animation: none !important;
     transition: none !important;
   }
-  .eyebrow, .hero-name span, .hero-tagline, .hero-meta,
+  .eyebrow, .hero-name span, .hero-meta, .hero-actions,
   .section-head, .reveal {
     opacity: 1 !important;
     transform: none !important;
   }
+  /* 帯は止めるが、内容は読めるよう先頭を表示したままにする */
+  .marquee-track { transform: none !important; }
+  .grain { display: none; }
 }
