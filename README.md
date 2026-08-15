@@ -1,4 +1,4 @@
-# NAKAYA — Portfolio
+# 太田健吾 — Portfolio
 
 エンジニア就職活動用のポートフォリオサイト。ビルドツールを使わず、HTML / CSS / JavaScript のみで構築しています。
 
@@ -38,7 +38,7 @@ python -m http.server 8000
 
 ## TODO
 
-- [ ] Works に実際の制作物を3件掲載する
+- [ ] Works の「喪失世界」の説明・技術スタック・GitHubリンクを埋める
 - [ ] Career の年月を実際の経歴に差し替える
 - [ ] Contact の GitHub / X のリンクを設定する
 - [ ] og-image.png（1200×630）を用意して OGP タグを有効化する

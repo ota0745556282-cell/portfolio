@@ -16,7 +16,7 @@
 
 <!-- ▼【書き換える】検索結果でタイトルの下に出る説明文（全角60〜70字が目安）
      「誰が・何ができる人か」を1文で。Works を書き終えたら内容を合わせて更新する -->
-<meta name="description" content="太田健吾のポートフォリオ。JavaScript / C# / Java を中心に開発しています。制作物・スキル・経歴を掲載しています。">
+<meta name="description" content="太田健吾のポートフォリオ。同志社大学 理工学部。Unity製RPG「喪失世界」やJava製ゲーム「Javaモン」を制作。制作物・スキル・経歴を掲載しています。">
 
 <meta name="author" content="太田健吾">
 <meta name="theme-color" content="#1b4332" media="(prefers-color-scheme: light)">
@@ -32,7 +32,7 @@
 <!-- ▼ SNSやSlackでURLを貼ったときに出るカードの文字 -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="太田健吾 | Engineer Portfolio">
-<meta property="og:description" content="JavaScript / C# / Java を中心に開発しています。制作物・スキル・経歴を掲載しています。">
+<meta property="og:description" content="同志社大学 理工学部。Unity製RPG「喪失世界」やJava製ゲーム「Javaモン」を制作。制作物・スキル・経歴を掲載しています。">
 <meta property="og:locale" content="ja_JP">
 
 <!-- ▼【あとで】カード画像。1200×630px の og-image.png を同じフォルダに置いたら、
@@ -41,6 +41,16 @@
 <!-- <meta name="twitter:card" content="summary_large_image"> -->
 
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<!-- ▼ Webフォント（Google Fonts）
+     Space Grotesk … 英字の見出し用。開発者のポートフォリオで定番の書体
+     Zen Kaku Gothic New … 日本語用。「太田健吾」の大見出しはこれで表示されます
+     JetBrains Mono … 等幅。エディタ用フォントとして広く使われているもの
+     ※ 読み込みに失敗しても、下の style.css で端末標準のフォントに落ちます -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+
 <link rel="stylesheet" href="style.css">
 <noscript>
 <style>
@@ -53,15 +63,20 @@
      BODY ｜ ここから下が画面に表示される部分
 
      このページの構成（上から順）
-       NAV      … 画面上部に固定されるメニュー
-       HERO     … 一番上の大きな名前とキャッチコピー
-       01 About … 自己紹介
-       02 Works … 制作物 ★最優先で埋める
-       03 Skills… 使える技術
-       04 Career… 経歴（年表）
-       05 Tennis… テニス実績
-       06 Contact… 連絡先
-       FOOTER   … 一番下
+       NAV          … 画面上部に固定されるメニュー
+       HERO         … 一番上の大きな名前とキャッチコピー
+       01 About     … 自己紹介
+       02 Works     … 制作物 ★最優先で埋める
+       03 Skills    … 使える技術（レベル・経験年数つき）
+       04 Engineering… プログラミングについての4つの質問
+       05 Career    … 経歴（年表）
+       06 Tennis    … テニス実績
+       07 Contact   … 連絡先
+       FOOTER       … 一番下
+
+     セクション構成は、GitHubで公開されている実在の個人ポートフォリオ
+     18件の調査と、クックパッドが新卒選考で使ったポートフォリオ定義
+     （github.com/cookpad/2018-newgrads-engineer-portfolio）に基づいています。
 
      コメントの読み方
        【書き換える】… 必ず手を入れる場所
@@ -73,11 +88,17 @@
 <!-- 画面には出ない。キーボード操作の人が本文へ飛ぶためのリンク（触らなくてよい） -->
 <a class="skip-link" href="#main">本文へスキップ</a>
 
+<!-- スクロール量を示す上端のバー（触らなくてよい） -->
+<div class="scroll-progress" aria-hidden="true"><span></span></div>
+
+<!-- 画面全体にかける微細なノイズ。紙のような質感を出すためのもの（触らなくてよい） -->
+<div class="grain" aria-hidden="true"></div>
+
 <div class="page">
 
   <!-- ==========================================================
        NAV ｜ 画面の一番上に貼り付くメニュー
-       ・左の「NAKAYA」＝ロゴ文字
+       ・左の「太田健吾」＝ロゴ文字
        ・右の並び＝各セクションへのジャンプリンク
        セクションを増減したときは、この <li> も合わせて増減する
        ========================================================== -->
@@ -90,6 +111,7 @@
       <li><a href="#about">About</a></li>
       <li><a href="#works">Works</a></li>
       <li><a href="#skills">Skills</a></li>
+      <li><a href="#engineering">Engineering</a></li>
       <li><a href="#career">Career</a></li>
       <li><a href="#tennis">Tennis</a></li>
       <li><a href="#contact">Contact</a></li>
@@ -118,9 +140,6 @@
         <span>太</span><span>田</span><span>健</span><span>吾</span>
       </h1>
 
-      <!-- ▼【書き換える】名前の下のキャッチコピー（1〜2文） -->
-      <p class="hero-tagline">同志社大学で学びながら、コードとコートを行き来してきました。</p>
-
       <!-- ▼【書き換える】丸いバッジ。増やすときは <span class="badge">...</span> をコピー -->
       <div class="hero-meta">
         <span class="badge">🇹🇭 THAILAND</span>
@@ -135,6 +154,24 @@
 
     </div>
   </header>
+
+  <!-- ==========================================================
+       MARQUEE ｜ 横に流れ続ける帯
+       扱っている技術を延々と流します。多くのポートフォリオで使われている
+       「インフィニット・マーキー」と呼ばれる作りで、同じ内容を2組並べて
+       片方が流れ切る瞬間にもう片方が繋がるようにしています。
+
+       ▼【書き換える】流す文字は下の <span class="marquee-group"> の中身だけ。
+         画面幅に足りるだけの複製は script.js が自動で作るので、
+         ここは1組だけ書けば大丈夫です
+       ========================================================== -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span class="marquee-group">
+        <b>Unity</b><i>✦</i><b>C#</b><i>✦</i><b>Java</b><i>✦</i><b>JavaScript</b><i>✦</i><b>HTML / CSS</b><i>✦</i><b>Git</b><i>✦</i><b>Game Dev</b><i>✦</i><b>Tennis</b><i>✦</i>
+      </span>
+    </div>
+  </div>
 
   <main id="main">
 
@@ -158,9 +195,10 @@
            タイ居住歴とテニスは他の学生と差がつく材料。
            「だから何ができるか」まで書くと効きます -->
       <p class="lead reveal">
-        タイに住んでいた経験から、異なる環境の人と協働することに抵抗がありません。
-        現在は同志社大学で学びながら、JavaScript / C# / Java を使って個人開発を進めています。
-        テニスで培った「課題を分解して反復改善する」進め方を、そのままコードにも当てはめて取り組んでいます。
+        同志社大学 理工学部で学ぶ2年生です。中学から続けたテニスを大学1年で辞めたことをきっかけに
+        プログラミングを始め、Unity 製の RPG「喪失世界」と、授業でリーダーを務めた「Javaモン」を作りました。
+        タイに住んでいた経験から、異なる背景の相手と前提をすり合わせながら進めることに慣れています。
+        テニスで身につけた「課題を分解して反復で潰す」進め方を、そのままコードにも当てはめています。
       </p>
 
       <!-- ▼ 3枚のカード。<h3> が小見出し、<p> が中身
@@ -185,9 +223,7 @@
 
         <div class="about-card reveal">
           <h3>志望</h3>
-          <!-- ▼【書き換える】志望職種を具体的に
-               例：Webアプリケーションエンジニア / バックエンドエンジニア -->
-          <p>ソフトウェアエンジニア</p>
+          <p>Webアプリケーション<br>エンジニア</p>
         </div>
 
       </div>
@@ -197,21 +233,22 @@
          02 ｜ WORKS ｜ 制作物  ★ここが一番見られます★
          画面上の見出し：「02  Works」
 
-         カード1枚が作品1つ。<article class="work-card"> 〜 </article> が1セット。
-         3件あると比較材料として十分です。
+         現在は「喪失世界」1件のみ。
+         カード1枚が作品1つ＝<article class="work-card"> 〜 </article>。
+         増やすときは <article> 〜 </article> をまるごとコピーして、
+         work-no の番号（01 → 02）を変えてください。
 
          カードの中身（上から順）
-           work-no      … 通し番号 01 / 02 / 03
-           work-status  … 右上のラベル（公開中 / 準備中 など）
+           work-no      … 通し番号 01
+           work-status  … 右上のラベル（公開中 / 制作中 など）
            work-title   … 作品名
-           work-desc    … 説明。「作った機能」より「解決した課題」から書く
+           work-desc    … 説明。「作った機能」より「どんなゲームか」から書く
            work-detail  … 担当 と 工夫した点
            tech-list    … 使った技術のタグ
-           work-links   … Demo（動くもの）と Code（GitHub）へのリンク
+           work-links   … GitHub や公開先の案内
 
          書き終えたカードは class から is-draft を消してください
          （点線の枠 → 実線の枠に変わります）。
-         使わないカードは <article> 〜 </article> をまるごと削除。
          ========================================================== -->
     <section id="works" class="section">
 
@@ -225,134 +262,91 @@
 
       <div class="work-grid">
 
-        <!-- ---------- 作品カード 1枚目（記入済みの見本） ---------- -->
+        <!-- ---------- 作品カード：喪失世界 ---------- -->
         <article class="work-card reveal">
           <div class="work-top">
             <span class="work-no">01</span>
             <!-- 右上のラベル。is-live を付けると黄緑色になります -->
-            <span class="work-status is-live">公開中</span>
+            <span class="work-status is-live">公開中・プレイ可</span>
           </div>
 
-          <h3 class="work-title">Portfolio Site</h3>
+          <h3 class="work-title">喪失世界</h3>
 
           <p class="work-desc">
-            このサイト。ビルドツールを使わず HTML / CSS / JavaScript のみで構築。
-            IntersectionObserver によるスクロール表示、ダークモード対応、
-            JS が失敗しても本文が消えないフォールバックを実装しています。
+            魔王を倒した勇者が、僧侶に振られるところから始まる RPG。
+            「弱い人が好き」という彼女の理想に近づくため、ダンジョンを進むごとに
+            武器や魔法を失っていきます。失うことが良くないとされる価値観を
+            裏返したくて作りました。
           </p>
 
           <dl class="work-detail">
             <div>
               <dt>担当</dt>
-              <dd>デザイン・実装（個人開発）</dd>
+              <dd>個人開発（企画・実装）</dd>
+            </div>
+            <div>
+              <dt>制作期間</dt>
+              <dd>1ヶ月</dd>
             </div>
             <div>
               <dt>工夫した点</dt>
-              <dd>CSS 変数によるテーマ設計と、<code>prefers-reduced-motion</code> を含むアクセシビリティ配慮</dd>
+              <!-- ▼【できれば追記】ここは面接で必ず掘られます。
+                   「配列をどう使って解決したのか」をもう一段具体的に書けると強くなります。
+                   例：所持中の武器・魔法をどう保持して、喪失時に何をしているか -->
+              <dd>武器や魔法を失っていく「喪失」システムの実装に一番詰まり、持ち物を配列で管理する形に設計し直して解決しました</dd>
             </div>
           </dl>
 
           <ul class="tech-list">
-            <li>HTML</li>
-            <li>CSS</li>
-            <li>JavaScript</li>
+            <li>Unity</li>
+            <li>C#</li>
           </ul>
 
-          <!-- ▼【あとで】href="#" を実際のURLに差し替える
-               公開URL と GitHub リポジトリのURL。片方しか無い場合は、
-               無いほうの <a> 1行を削除してください -->
+          <!-- ▼ unityroom の公開ページ。ブラウザでそのまま遊べます -->
           <div class="work-links">
-            <a class="work-link" href="#" aria-label="Portfolio Site のデモを開く">Demo <span aria-hidden="true">↗</span></a>
-            <a class="work-link" href="#" aria-label="Portfolio Site のソースコードを見る">Code <span aria-hidden="true">↗</span></a>
+            <a class="work-link" href="https://unityroom.com/games/sousituworld" rel="noopener" aria-label="喪失世界を unityroom で遊ぶ">遊ぶ (unityroom) <span aria-hidden="true">↗</span></a>
           </div>
         </article>
 
-        <!-- ---------- 作品カード 2枚目（テンプレート・要記入） ----------
-             下の日本語はすべて「書き方の指示」です。実際の内容に置き換えてください -->
-        <article class="work-card is-draft reveal">
+        <!-- ---------- 作品カード：Javaモン ---------- -->
+        <article class="work-card reveal">
           <div class="work-top">
             <span class="work-no">02</span>
-            <span class="work-status">準備中</span>
+            <span class="work-status">授業・チーム開発</span>
           </div>
 
-          <!-- ▼【書き換える】作品名 -->
-          <h3 class="work-title">作品タイトル</h3>
+          <h3 class="work-title">Javaモン</h3>
 
-          <!-- ▼【書き換える】説明（2〜3文）
-               ×「ログイン機能を作った」
-               ○「部員の練習記録が紙で共有できなかったため、スマホから入力・閲覧できるようにした」 -->
           <p class="work-desc">
-            何を解決するためのものか、誰が使うのかを2〜3文で。
-            「作った機能」ではなく「解決した課題」から書き始めると読まれます。
+            授業のチーム開発で制作した、ポケモン風のターン制バトルゲーム。
+            5属性の相性、状態異常、アイテム、メガシンカを実装し、
+            Java Swing で画面を作って BGM も再生します。
           </p>
 
           <dl class="work-detail">
             <div>
               <dt>担当</dt>
-              <!-- ▼【書き換える】例：個人開発 / 4人チーム・フロントエンド担当 -->
-              <dd>個人開発 / チーム開発（役割・人数）</dd>
+              <dd>チーム開発・リーダー（プロジェクト進行）</dd>
+            </div>
+            <div>
+              <dt>規模</dt>
+              <dd>Java 約760行</dd>
             </div>
             <div>
               <dt>工夫した点</dt>
-              <!-- ▼【書き換える】面接で必ず掘られる箇所。詰まった所とその解決方法を具体的に
-                   ○「初回表示が3秒かかっていたため、画像を遅延読み込みにして1.2秒に短縮した」 -->
-              <dd>詰まった箇所と、それをどう調べてどう解決したか</dd>
+              <dd>BGM再生を抽象クラス <code>Player</code> と継承クラスに分離し、属性と状態異常は <code>enum</code> で型として定義。ダメージ計算はタイプ相性と乱数を含めて専用クラスに集約しました</dd>
             </div>
           </dl>
 
-          <!-- ▼【書き換える】使った技術。実際に自分で書いたものだけ。
-               1つ＝<li>1行。増減は行のコピー/削除で -->
           <ul class="tech-list">
-            <li>技術</li>
-            <li>技術</li>
+            <li>Java</li>
+            <li>Swing</li>
           </ul>
 
-          <!-- ▼【書き換える】href="#" を実際のURLに -->
+          <!-- ▼【あとで】GitHubに上げたら、下の <span> をこの形に置き換えてください：
+               <a class="work-link" href="https://github.com/ota0745556282-cell/リポジトリ名" rel="noopener">Code <span aria-hidden="true">↗</span></a> -->
           <div class="work-links">
-            <a class="work-link" href="#">Demo <span aria-hidden="true">↗</span></a>
-            <a class="work-link" href="#">Code <span aria-hidden="true">↗</span></a>
-          </div>
-        </article>
-
-        <!-- ---------- 作品カード 3枚目（テンプレート・要記入） ---------- -->
-        <article class="work-card is-draft reveal">
-          <div class="work-top">
-            <span class="work-no">03</span>
-            <span class="work-status">準備中</span>
-          </div>
-
-          <!-- ▼【書き換える】作品名 -->
-          <h3 class="work-title">作品タイトル</h3>
-
-          <!-- ▼【書き換える】説明（2〜3文） -->
-          <p class="work-desc">
-            学校の課題やハッカソン作品でも構いません。
-            規模より「自分で判断した箇所」が説明できるかが見られます。
-          </p>
-
-          <dl class="work-detail">
-            <div>
-              <dt>担当</dt>
-              <!-- ▼【書き換える】 -->
-              <dd>個人開発 / チーム開発（役割・人数）</dd>
-            </div>
-            <div>
-              <dt>工夫した点</dt>
-              <!-- ▼【書き換える】 -->
-              <dd>技術選定の理由、または改善して測れた変化</dd>
-            </div>
-          </dl>
-
-          <!-- ▼【書き換える】使った技術 -->
-          <ul class="tech-list">
-            <li>技術</li>
-            <li>技術</li>
-          </ul>
-
-          <!-- ▼【書き換える】href="#" を実際のURLに -->
-          <div class="work-links">
-            <a class="work-link" href="#">Demo <span aria-hidden="true">↗</span></a>
-            <a class="work-link" href="#">Code <span aria-hidden="true">↗</span></a>
+            <span class="static-text">GitHub 公開準備中</span>
           </div>
         </article>
 
@@ -363,8 +357,24 @@
          03 ｜ SKILLS ｜ 使える技術
          画面上の見出し：「03  Skills」
 
-         グループ1つ＝<div class="skill-group"> 〜 </div>
-         技術1つ＝<span class="chip">技術名</span>（1行コピーで増やせます）
+         【なぜこの形式なのか】
+         クックパッドが新卒選考で提出させたポートフォリオ定義では、
+         技術ごとに「スキルレベル」「経験年数」「補足」の3点を要求しています。
+         言語名を並べるだけでは、この3点に答えられません。
+
+         技術1つ＝<li class="skill-item"> 〜 </li>
+           skill-name  … 技術名
+           skill-years … 経験年数
+           skill-level … 5段階のレベル。is-on を付けた分だけ●が点灯します
+           skill-note  … 補足（何を作ったか／どこまでできるか）
+
+         レベルの目安
+           1 … 授業や入門書で触った
+           2 … 調べながらなら書ける
+           3 … 一人で一通り作れる
+           4 … 人に教えられる／設計から任せられる
+           5 … 業務レベル
+         盛らないこと。面接でその場で掘られます。
          ========================================================== -->
     <section id="skills" class="section">
 
@@ -373,42 +383,88 @@
         <h2>Skills</h2>
       </div>
 
+      <!-- ▼【書き換える】得意な言語を1文で（クックパッドの定義項目「得意なプログラミング言語」） -->
+      <p class="section-note reveal">一番長く書いているのは JavaScript です。</p>
+
+      <ul class="skill-list">
+
+        <!-- ---------- 技術1つ目 ---------- -->
+        <li class="skill-item reveal">
+          <div class="skill-item-head">
+            <!-- ▼【書き換える】技術名 -->
+            <span class="skill-name">JavaScript</span>
+            <!-- ▼【書き換える】経験年数 -->
+            <span class="skill-years">経験 1年</span>
+          </div>
+          <!-- ▼【書き換える】レベル。is-on の数を1〜5個に増減させる。
+               aria-label の数字も合わせて直す（読み上げ用） -->
+          <div class="skill-level" role="img" aria-label="レベル 5段階中 2">
+            <span class="dot is-on"></span><span class="dot is-on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          </div>
+          <!-- ▼【書き換える】補足。「何を作ったか」を書くと説得力が出ます -->
+          <p class="skill-note">このポートフォリオのスクロール表示・コピー機能を実装。</p>
+        </li>
+
+        <!-- ---------- 技術2つ目 ---------- -->
+        <li class="skill-item reveal">
+          <div class="skill-item-head">
+            <span class="skill-name">C# / Unity</span>
+            <span class="skill-years">経験 1年</span>
+          </div>
+          <div class="skill-level" role="img" aria-label="レベル 5段階中 2">
+            <span class="dot is-on"></span><span class="dot is-on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          </div>
+          <p class="skill-note">Unity で RPG「喪失世界」を個人開発。ライフイズテックのインターンでも使用。</p>
+        </li>
+
+        <!-- ---------- 技術3つ目 ---------- -->
+        <li class="skill-item reveal">
+          <div class="skill-item-head">
+            <span class="skill-name">Java</span>
+            <span class="skill-years">経験 1年</span>
+          </div>
+          <div class="skill-level" role="img" aria-label="レベル 5段階中 3">
+            <span class="dot is-on"></span><span class="dot is-on"></span><span class="dot is-on"></span><span class="dot"></span><span class="dot"></span>
+          </div>
+          <p class="skill-note">Swing で「Javaモン」を制作。抽象クラス・継承・enum を使って設計。</p>
+        </li>
+
+        <!-- ---------- 技術4つ目 ---------- -->
+        <li class="skill-item reveal">
+          <div class="skill-item-head">
+            <span class="skill-name">HTML / CSS</span>
+            <span class="skill-years">経験 1年</span>
+          </div>
+          <div class="skill-level" role="img" aria-label="レベル 5段階中 2">
+            <span class="dot is-on"></span><span class="dot is-on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          </div>
+          <p class="skill-note">このポートフォリオを設計・実装。ダークモードとレスポンシブに対応。</p>
+        </li>
+
+        <!-- 技術を増やすときは、上の <li> 〜 </li> を1つコピーして貼り付け -->
+
+      </ul>
+
+      <!-- ▼ ツールと学習中の技術。ここは年数もレベルも不要なのでタグ表示のまま -->
       <div class="skill-groups">
 
-        <!-- ---------- グループ1：言語 ---------- -->
-        <div class="skill-group reveal">
-          <!-- ▼ グループ名（画面には大文字で出ます） -->
-          <h3 class="skill-group-title">Languages</h3>
-          <!-- ▼【書き換える】実際に自分でコードを書いた言語だけ。
-               授業で触った程度のものは下の Learning へ -->
-          <div class="chip-row">
-            <span class="chip">JavaScript</span>
-            <span class="chip">C#</span>
-            <span class="chip">Java</span>
-            <span class="chip">HTML / CSS</span>
-          </div>
-        </div>
-
-        <!-- ---------- グループ2：ツール ---------- -->
         <div class="skill-group reveal">
           <h3 class="skill-group-title">Tools</h3>
-          <!-- ▼【書き換える】実際に使っているものだけ残す
-               例：Docker / Figma / MySQL / Unity など -->
+          <!-- ▼【書き換える】実際に使っているものだけ残す（例：Docker / Figma / MySQL / Unity） -->
           <div class="chip-row">
             <span class="chip">Git / GitHub</span>
             <span class="chip">VS Code</span>
           </div>
         </div>
 
-        <!-- ---------- グループ3：学習中 ---------- -->
         <div class="skill-group reveal">
           <h3 class="skill-group-title">Learning</h3>
-          <!-- ▼【書き換える】いま学習中のもの。ここは空にしないこと。
-               「学習を続けている人」という評価材料になります。
-               is-learning を付けると点線の枠になります -->
+          <!-- ▼【要確認】いま実際に学習中のものだけを書いてください。
+               手を動かしていない技術を書くと面接で崩れます。
+               クラウドは具体名（AWS / Azure / GCP）が書けると強くなります -->
           <div class="chip-row">
-            <span class="chip is-learning">TypeScript</span>
-            <span class="chip is-learning">React</span>
+            <span class="chip is-learning">クラウド</span>
+            <span class="chip is-learning">DX</span>
           </div>
         </div>
 
@@ -416,8 +472,74 @@
     </section>
 
     <!-- ==========================================================
-         04 ｜ CAREER ｜ 経歴（縦の年表）
-         画面上の見出し：「04  Career」
+         04 ｜ ENGINEERING ｜ プログラミングについて
+         画面上の見出し：「04  Engineering」
+
+         【なぜこのセクションを作ったか】
+         海外のポートフォリオ18件を調べた中には、ほぼ存在しない項目です。
+         しかしクックパッドの新卒選考ポートフォリオ定義には
+         「始めたきっかけ」「面白さを感じるところ」「技術についての自己PR」が
+         項目として明記されています。日本の新卒採用に特有の質問なので、
+         ここで先に答えておくと面接がそのまま進みます。
+
+         カード1つ＝<div class="qa-card"> 〜 </div>
+           <h3> … 質問（変えなくてよい）
+           <p>  … 自分の答え
+         ========================================================== -->
+    <section id="engineering" class="section">
+
+      <div class="section-head">
+        <span class="tag">04</span>
+        <h2>Engineering</h2>
+      </div>
+
+      <div class="qa-grid">
+
+        <div class="qa-card reveal">
+          <h3>プログラミングを始めたきっかけ</h3>
+          <p>
+            大学1年でテニスを辞めたことがきっかけです。
+            打ち込む対象を失ったとき、理系として必要とされる人材になりたいと考え、
+            そこから本格的にプログラミングを始めました。
+          </p>
+        </div>
+
+        <div class="qa-card reveal">
+          <h3>面白さを感じるところ</h3>
+          <!-- ▼【できれば追記】「ちゃんと動いたとき」を、具体的な場面に紐づけると刺さります。
+               例：喪失システムが初めて意図通りに動いた瞬間 -->
+          <p>
+            書いたものがちゃんと動いた瞬間です。
+            とくに何度も詰まった処理が意図どおりに動いたときは、
+            テニスで狙った球が入ったときと同じ感覚があります。
+          </p>
+        </div>
+
+        <div class="qa-card reveal">
+          <h3>技術についての自己PR</h3>
+          <!-- ▼【要確認】クラウドは具体名（AWS等）、DXは何をしているかを書けると強くなります -->
+          <p>
+            現在はクラウドと DX を学んでいます。
+            Java・C#・JavaScript と一通り触ってきたので、
+            次は作ったものを実際に動かして届けるところまでできるようになりたいです。
+          </p>
+        </div>
+
+        <div class="qa-card reveal">
+          <h3>学生時代に熱中して取り組んだこと</h3>
+          <p>
+            中学からのテニスです。中学1年で世界大会、高校2年で全国選抜に出場し、
+            同じ年に京都府ダブルスで優勝しました。
+            課題を分解して反復で潰していく進め方は、そのままコードにも使っています。
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         05 ｜ CAREER ｜ 経歴（縦の年表）
+         画面上の見出し：「05  Career」
 
          項目1つ＝<li class="timeline-item"> 〜 </li>
            timeline-date … 左側の年月（2024.04 の形式）
@@ -425,31 +547,72 @@
            <p>           … 補足を1行
 
          入学 / 学習開始 / インターン / アルバイト / ハッカソン /
-         資格 / 大会実績 などを、古い順に並べます
+         資格 / 大会実績 などを、古い順に並べます。
+
+         【優先して埋めるもの】
+         クックパッドの新卒選考ポートフォリオ定義では
+         「アルバイト経験」「インターン経験」が独立した項目になっています。
+         技術と無関係なアルバイトでも、書ける範囲で入れておくと効きます。
          ========================================================== -->
     <section id="career" class="section">
 
       <div class="section-head">
-        <span class="tag">04</span>
+        <span class="tag">05</span>
         <h2>Career</h2>
       </div>
 
       <ol class="timeline">
 
-        <!-- ▼【書き換える】20XX を実際の年に。以下すべて同様 -->
+        <!-- ▼【要確認】この2行の年は、2025年4月入学から逆算した推定です。
+             正しい年に直してください（中1 → 2019年度、高2 → 2023年度と仮置き） -->
         <li class="timeline-item reveal">
-          <span class="timeline-date">20XX.04</span>
+          <span class="timeline-date">2019</span>
           <div class="timeline-body">
-            <h3>教養大学 入学</h3>
-            <p>専攻・力を入れて学んだ領域を1行で。</p>
+            <h3>テニス 世界大会 出場</h3>
+            <p>中学1年。</p>
           </div>
         </li>
 
         <li class="timeline-item reveal">
-          <span class="timeline-date">20XX.XX</span>
+          <span class="timeline-date">2023</span>
+          <div class="timeline-body">
+            <h3>全国選抜 出場 / 京都府ダブルス 優勝</h3>
+            <p>高校2年。</p>
+          </div>
+        </li>
+
+        <li class="timeline-item reveal">
+          <span class="timeline-date">2025.04</span>
+          <div class="timeline-body">
+            <h3>同志社大学 理工学部 情報システムデザイン学科 入学</h3>
+            <!-- ▼【できれば追記】力を入れて学んだ授業や領域を1行で -->
+            <p>2029年3月 卒業見込み。</p>
+          </div>
+        </li>
+
+        <li class="timeline-item reveal">
+          <span class="timeline-date">2025</span>
           <div class="timeline-body">
             <h3>プログラミング学習を開始</h3>
-            <p>きっかけと、最初に作ったものを1行で。</p>
+            <p>テニスを辞めたことをきっかけに、大学1年から本格的に開始。</p>
+          </div>
+        </li>
+
+        <!-- ▼【要確認】インターンの時期。分かる範囲で年月を入れてください -->
+        <li class="timeline-item reveal">
+          <span class="timeline-date">20XX.XX</span>
+          <div class="timeline-body">
+            <h3>ライフイズテック インターン</h3>
+            <!-- ▼【できれば追記】担当した内容と期間。中高生に教える立場だったかどうかも書けると強い -->
+            <p>C# を用いたゲーム制作を学ぶ。</p>
+          </div>
+        </li>
+
+        <li class="timeline-item reveal">
+          <span class="timeline-date">2026</span>
+          <div class="timeline-body">
+            <h3>「喪失世界」公開</h3>
+            <p>Unity / C# で個人開発し、unityroom で公開。</p>
           </div>
         </li>
 
@@ -467,8 +630,14 @@
     </section>
 
     <!-- ==========================================================
-         05 ｜ TENNIS ｜ テニス実績
-         画面上の見出し：「05  Tennis」
+         06 ｜ TENNIS ｜ テニス実績
+         画面上の見出し：「06  Tennis」
+
+         【このセクションの役割】
+         調査した18サイト中、受賞・実績欄を持つのは3件（17%）だけでした。
+         つまりここは他の学生と最も差がつく場所です。
+         上の Engineering「学生時代に熱中して取り組んだこと」と
+         内容を繋げると、実績が人物像の裏付けとして働きます。
 
          カード1つ＝<article class="score-card"> 〜 </article>
            score-tag … カード上部の小さいラベル
@@ -478,7 +647,7 @@
     <section id="tennis" class="section">
 
       <div class="section-head">
-        <span class="tag">05</span>
+        <span class="tag">06</span>
         <h2>Tennis</h2>
       </div>
 
@@ -488,28 +657,36 @@
           <span class="score-tag">World</span>
           <!-- ▼ 実績を増やすなら、この <article> 〜 </article> をコピー -->
           <h3>世界大会 出場</h3>
-          <p>International competition appearance</p>
+          <p>中学1年 ／ International competition appearance</p>
         </article>
 
         <article class="score-card reveal">
           <span class="score-tag">National</span>
           <h3>全国選抜 出場</h3>
-          <p>National selection tournament appearance</p>
+          <p>高校2年 ／ National selection tournament appearance</p>
+        </article>
+
+        <article class="score-card reveal">
+          <span class="score-tag">Champion</span>
+          <h3>京都府 ダブルス 優勝</h3>
+          <p>高校2年 ／ Kyoto prefectural doubles champion</p>
         </article>
 
       </div>
     </section>
 
     <!-- ==========================================================
-         06 ｜ CONTACT ｜ 連絡先
-         画面上の見出し：「06  Contact」
+         07 ｜ CONTACT ｜ 連絡先
+         画面上の見出し：「07  Contact」
 
-         ここが繋がらないと、他が良くても選考に進めません
+         ここが繋がらないと、他が良くても選考に進めません。
+         調査した18サイト中14件（78%）が独立した Contact 欄を持ち、
+         16件（89%）が GitHub などのリンクを置いていました。
          ========================================================== -->
     <section id="contact" class="section">
 
       <div class="section-head">
-        <span class="tag">06</span>
+        <span class="tag">07</span>
         <h2>Contact</h2>
       </div>
 
@@ -534,14 +711,20 @@
           </button>
         </div>
 
-        <!-- ▼【書き換える】SNS・GitHub のリンク
-             href="#" を自分のページのURLに置き換える。
-             例：https://github.com/ユーザー名
-             使っていないサービスは <li> 〜 </li> の行ごと削除してください
-             （リンク切れのまま公開すると逆効果です） -->
+        <!-- ▼ SNS・GitHub
+             GitHub は実際のアカウントに繋がるリンクです（クリックできます）。
+             X は URL が未設定なので、押せない普通のテキストにしてあります。
+             アカウントができたら、下の <span> 1行をこの形に置き換えてください：
+               <a href="https://x.com/ユーザー名" rel="me noopener">X (Twitter) <span aria-hidden="true">↗</span></a>
+             使わないなら <li> 〜 </li> の行ごと削除してOKです -->
         <ul class="contact-links">
-          <li><a href="#" rel="me noopener">GitHub <span aria-hidden="true">↗</span></a></li>
-          <li><a href="#" rel="me noopener">X (Twitter) <span aria-hidden="true">↗</span></a></li>
+          <li><a href="https://github.com/ota0745556282-cell" rel="me noopener">GitHub <span aria-hidden="true">↗</span></a></li>
+          <li><span class="static-text">X (Twitter) 準備中</span></li>
+          <!-- ▼【あとで】履歴書PDF。調査した18サイト中8件（44%）が置いていました。
+               resume.pdf をこのフォルダに置いたら、下の <span> 1行をこれに置き換える：
+                 <a href="resume.pdf" download>履歴書 (PDF) <span aria-hidden="true">↓</span></a>
+               ※ PDFには住所・電話番号を載せないこと（公開ファイルになります） -->
+          <li><span class="static-text">履歴書 (PDF) 準備中</span></li>
         </ul>
 
       </div>
@@ -554,7 +737,7 @@
        ========================================================== -->
   <footer class="footer">
     <!-- ▼【書き換える】左：名前　中央：肩書き　右：先頭へ戻るリンク -->
-    <span class="footer-mark">NAKAYA</span>
+    <span class="footer-mark">太田健吾</span>
     <span class="footer-note">Software &amp; Tennis</span>
     <a class="footer-top" href="#top">Back to top <span aria-hidden="true">↑</span></a>
   </footer>
@@ -569,11 +752,11 @@
 {
   "@context": "https://schema.org",
   "@type": "Person",
-  "name": "NAKAYA",
+  "name": "太田健吾",
   "url": "https://example.com/",
   "jobTitle": "Software Engineer",
-  "knowsAbout": ["JavaScript", "C#", "Java", "HTML", "CSS"],
-  "alumniOf": { "@type": "CollegeOrUniversity", "name": "教養大学" }
+  "knowsAbout": ["JavaScript", "C#", "Java", "Unity", "HTML", "CSS"],
+  "alumniOf": { "@type": "CollegeOrUniversity", "name": "同志社大学" }
 }
 </script>
 <!-- ▲【書き換える】上の "url" の example.com を公開URLに。
