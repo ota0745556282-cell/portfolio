@@ -1,6 +1,4 @@
-/* スクロールに応じて要素を表示する。
-   同じ親の中に並んだ .reveal には、順番に応じた遅延を入れて
-   1枚ずつ現れるようにしている */
+/* スクロールで要素を表示する。並んだ .reveal には順番に遅延を入れて1枚ずつ現れさせる */
 (function () {
   var targets = document.querySelectorAll('.section-head, .reveal');
 
@@ -28,7 +26,7 @@
   targets.forEach(function (el) { io.observe(el); });
 })();
 
-/* ページ上端のスクロール進捗バー */
+/* ページ上端の進捗バー */
 (function () {
   var bar = document.querySelector('.scroll-progress span');
   if (!bar) return;
@@ -54,10 +52,7 @@
   update();
 })();
 
-/* 横に流れ続ける帯（マーキー）。
-   1組の内容が画面幅より狭いと、流れ切ったあとに空白が出てしまう。
-   そこで画面幅を超えるまで内容を足したうえで、同じものをもう1組並べ、
-   トラック全体を -50% 動かすことで継ぎ目なく繋げている */
+/* 横に流れる帯。画面幅を超えるまで内容を足し、同じものをもう1組並べて継ぎ目を消す */
 (function () {
   var track = document.querySelector('.marquee-track');
   if (!track) return;
@@ -91,8 +86,7 @@
   }, { passive: true });
 })();
 
-/* 作品カードの上でマウスを追いかける光。
-   カード内でのカーソル位置を CSS 変数として渡している */
+/* 作品カードの上でマウスを追う光。カーソル位置を CSS 変数として渡している */
 (function () {
   var cards = document.querySelectorAll('.work-card');
   if (!cards.length) return;
@@ -112,7 +106,7 @@
   });
 })();
 
-/* 現在表示中のセクションをナビでハイライト */
+/* いま表示中のセクションを、浮いているメニューでハイライトする */
 (function () {
   if (!('IntersectionObserver' in window)) return;
 
@@ -146,7 +140,7 @@
   sections.forEach(function (section) { spy.observe(section); });
 })();
 
-/* メールアドレスのコピー */
+/* コピーボタン。data-copy の中身をクリップボードに送り、2秒だけ表示を変える */
 (function () {
   var buttons = document.querySelectorAll('[data-copy]');
 
@@ -158,19 +152,24 @@
     button.addEventListener('click', function () {
       var value = button.getAttribute('data-copy');
 
-      var done = function (message) {
+      /* クリップボードが使えない環境では、代わりに値そのものを出して手で選べるようにする */
+      var done = function (message, ok) {
         label.textContent = message;
+        button.classList.toggle('is-copied', ok);
         clearTimeout(timer);
-        timer = setTimeout(function () { label.textContent = original; }, 2000);
+        timer = setTimeout(function () {
+          label.textContent = original;
+          button.classList.remove('is-copied');
+        }, 2000);
       };
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(value).then(
-          function () { done('コピーしました'); },
-          function () { done(value); }
+          function () { done('コピー済み', true); },
+          function () { done(value, false); }
         );
       } else {
-        done(value);
+        done(value, false);
       }
     });
   });
